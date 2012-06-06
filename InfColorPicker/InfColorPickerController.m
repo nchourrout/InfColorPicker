@@ -154,6 +154,14 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 	self.navController = nil;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+	// if we're not presented modally, we'll never get a chance to send "did finish"
+	if (self.navigationController)
+		[ self.delegate colorPickerControllerDidFinish: self ];	
+}
+
 //------------------------------------------------------------------------------
 
 - (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) interfaceOrientation
