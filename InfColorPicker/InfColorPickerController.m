@@ -110,8 +110,8 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 	self = [ super initWithNibName: nibNameOrNil bundle: nibBundleOrNil ];
 	
 	if( self ) {
-		self.navigationItem.title = NSLocalizedString( @"Set Color", 
-									@"InfColorPicker default nav item title" );
+		self.navigationItem.title = NSLocalizedString( @"Set Color",
+                                                      @"InfColorPicker default nav item title" );
 	}
 	
 	return self;
@@ -122,14 +122,14 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 - (void) viewDidLoad
 {
 	[ super viewDidLoad ];
-
+    
 	self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
+    
 	barPicker.value = hue;
 	squareView.hue = hue;
 	squarePicker.hue = hue;
 	squarePicker.value = CGPointMake( saturation, brightness );
-
+    
 	if( sourceColor )
 		sourceColorView.backgroundColor = sourceColor;
 	
@@ -159,14 +159,24 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 	[super viewWillDisappear:animated];
 	// if we're not presented modally, we'll never get a chance to send "did finish"
 	if (self.navigationController)
-		[ self.delegate colorPickerControllerDidFinish: self ];	
+		[ self.delegate colorPickerControllerDidFinish: self ];
 }
 
 //------------------------------------------------------------------------------
 
 - (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) interfaceOrientation
 {
-	return interfaceOrientation == UIInterfaceOrientationPortrait;
+    return YES;
+}
+
+- (BOOL) shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll;
 }
 
 //------------------------------------------------------------------------------
@@ -178,7 +188,7 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 	nav.navigationBar.barStyle = UIBarStyleBlackOpaque;
 	
 	self.navigationItem.rightBarButtonItem = [ [ [ UIBarButtonItem alloc ] initWithBarButtonSystemItem: UIBarButtonSystemItemDone target: self action: @selector( done: ) ] autorelease ];
-				
+    
 	[ controller presentModalViewController: nav animated: YES ];
 }
 
@@ -202,7 +212,7 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 {
 	saturation = sender.value.x;
 	brightness = sender.value.y;
-
+    
 	[ self updateResultColor ];
 }
 
@@ -217,7 +227,7 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 
 - (IBAction) done: (id) sender
 {
-	[ self.delegate colorPickerControllerDidFinish: self ];	
+	[ self.delegate colorPickerControllerDidFinish: self ];
 }
 
 //------------------------------------------------------------------------------
@@ -242,7 +252,7 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 	[ self willChangeValueForKey: @"resultColor" ];
 	
 	[ resultColor release ];
-	resultColor = [ [ UIColor colorWithHue: hue saturation: saturation 
+	resultColor = [ [ UIColor colorWithHue: hue saturation: saturation
 								brightness: brightness alpha: 1.0f ] retain ];
 	
 	[ self didChangeValueForKey: @"resultColor" ];
@@ -272,9 +282,9 @@ static void HSVFromUIColor( UIColor* color, float* h, float* s, float* v )
 		}
 		
 		squarePicker.value = CGPointMake( saturation, brightness );
-
+        
 		resultColorView.backgroundColor = resultColor;
-
+        
 		[ self informDelegateDidChangeColor ];
 	}
 }
